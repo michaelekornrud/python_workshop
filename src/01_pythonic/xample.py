@@ -1,1 +1,0 @@
-# This will be a panic file so that the participants can get tips and suggestions on how to solve the problems

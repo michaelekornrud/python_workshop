@@ -5,6 +5,7 @@ description = "Python workshop for non-Python programmers"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = [
+    "pytest>=8.4.1",
     "ruff>=0.12.8",
 ]
 

@@ -1,12 +1,18 @@
 """
 Pythonic Thinking Workshop - Practice Exercises
 
+🎯 WORKSHOP PRIORITY GUIDE:
+- ⭐ CORE TASKS (1-4): Essential for 3-hour workshop - focus on these first
+- 🔥 RECOMMENDED TASKS (5-6): Complete if time allows in workshop
+- 💡 EXTENSION TASKS (7-9): Practice after workshop for deeper learning
+- 🏆 BONUS TASK: Advanced challenge for post-workshop exploration
+
 Complete the following tasks using Pythonic approaches.
 Try to apply the principles from the markdown file.
 """
 
 # =============================================================================
-# TASK 1: List Comprehensions
+# ⭐ CORE TASK 1: List Comprehensions (Essential - 5 minutes)
 # =============================================================================
 
 def task_1_non_pythonic():
@@ -24,7 +30,7 @@ def task_1_pythonic():
     pass
 
 # =============================================================================
-# TASK 2: String Formatting
+# ⭐ CORE TASK 2: String Formatting (Essential - 5 minutes)
 # =============================================================================
 
 def task_2_non_pythonic(products):
@@ -50,7 +56,7 @@ sample_products = [
 ]
 
 # =============================================================================
-# TASK 3: Dictionary Operations
+# ⭐ CORE TASK 3: Dictionary Operations (Essential - 5 minutes)
 # =============================================================================
 
 def task_3_non_pythonic(user_data, default_role="guest"):
@@ -79,7 +85,7 @@ sample_users = {
 }
 
 # =============================================================================
-# TASK 4: Parallel Iteration
+# ⭐ CORE TASK 4: Parallel Iteration (Essential - 5 minutes)
 # =============================================================================
 
 def task_4_non_pythonic(names, scores, subjects):
@@ -102,7 +108,7 @@ test_scores = [95, 87, 92]
 test_subjects = ["Math", "Science", "English"]
 
 # =============================================================================
-# TASK 5: Any/All Functions
+# 🔥 RECOMMENDED TASK 5: Any/All Functions (If time allows - 8 minutes)
 # =============================================================================
 
 def task_5a_non_pythonic(numbers):
@@ -136,7 +142,7 @@ def task_5b_pythonic(words):
     pass
 
 # =============================================================================
-# TASK 6: Enumerate and Unpacking
+# 🔥 RECOMMENDED TASK 6: Enumerate and Unpacking (If time allows - 8 minutes)
 # =============================================================================
 
 def task_6_non_pythonic(items):
@@ -165,7 +171,7 @@ inventory_items = [
 ]
 
 # =============================================================================
-# TASK 7: Generator Expression
+# 💡 EXTENSION TASK 7: Generator Expression (Post-workshop practice - 10 minutes)
 # =============================================================================
 
 def task_7_non_pythonic(data):
@@ -181,7 +187,7 @@ def task_7_pythonic(data):
     pass
 
 # =============================================================================
-# TASK 8: Context Manager Challenge
+# 💡 EXTENSION TASK 8: Context Manager Challenge (Post-workshop practice - 12 minutes)
 # =============================================================================
 
 def task_8_non_pythonic(filename):
@@ -207,7 +213,7 @@ def task_8_pythonic(filename):
     pass
 
 # =============================================================================
-# TASK 9: Chained Comparisons and Truthiness
+# 💡 EXTENSION TASK 9: Chained Comparisons and Truthiness (Post-workshop practice - 10 minutes)
 # =============================================================================
 
 def task_9_non_pythonic(scores):
@@ -229,11 +235,12 @@ def task_9_pythonic(scores):
     pass
 
 # =============================================================================
-# BONUS TASK: Combine Multiple Concepts
+# 🏆 BONUS TASK: Combine Multiple Concepts (Advanced challenge - 15+ minutes)
 # =============================================================================
 
 def bonus_task_non_pythonic(student_data):
     """
+    🏆 ADVANCED CHALLENGE - Only attempt after completing core tasks
     Convert this complex function to be fully Pythonic
     This function should:
     1. Filter students with grades >= 70

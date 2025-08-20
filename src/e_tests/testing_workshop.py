@@ -1,6 +1,11 @@
 """
 Testing Workshop - Practice Exercises
 
+🎯 WORKSHOP PRIORITY GUIDE:
+- ⭐ CORE TASKS (1-2): Essential for 3-hour workshop - focus on these first
+- 🔥 RECOMMENDED TASKS (3): Complete if time allows in workshop
+- 💡 EXTENSION TASKS (4+): Practice after workshop for deeper learning
+
 Complete the following tasks to practice testing concepts and techniques.
 Apply the principles from the testing.md file to write comprehensive test suites.
 """
@@ -10,11 +15,11 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 
 # =============================================================================
-# TASK 1: Basic Unit Testing with pytest
+# ⭐ CORE TASK 1: Basic Unit Testing with pytest (Essential - 15 minutes)
 # =============================================================================
 
 """
-TASK 1: Create a Calculator Class and Test Suite
+⭐ CORE TASK 1: Create a Calculator Class and Test Suite
 
 Create a Calculator class with basic mathematical operations and comprehensive tests.
 
@@ -43,11 +48,11 @@ class TestCalculator:
     pass
 
 # =============================================================================
-# TASK 2: Fixtures and Test Data Management
+# 🔥 RECOMMENDED TASK 2: Fixtures and Test Data Management (If time allows - 12 minutes)
 # =============================================================================
 
 """
-TASK 2: User Management System with Fixtures
+🔥 RECOMMENDED TASK 2: User Management System with Fixtures
 
 Create a UserManager class and comprehensive test suite using pytest fixtures.
 

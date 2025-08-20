@@ -1,6 +1,11 @@
 """
 Modules, Typing, and Tools Workshop - Practice Exercises
 
+🎯 WORKSHOP PRIORITY GUIDE:
+- ⭐ CORE TASKS (1-2): Essential for 3-hour workshop - focus on these first
+- 🔥 RECOMMENDED TASKS (3-4): Complete if time allows in workshop
+- 💡 EXTENSION TASKS (5+): Practice after workshop for deeper learning
+
 Complete the following tasks to practice module organization, type hints, and development tools.
 Apply the principles from the markdown file to create well-structured, type-safe Python code.
 """
@@ -9,11 +14,11 @@ from typing import Any, Protocol
 from abc import ABC, abstractmethod
 
 # =============================================================================
-# TASK 1: Basic Module Organization
+# ⭐ CORE TASK 1: Basic Module Organization (Essential - 12 minutes)
 # =============================================================================
 
 """
-TASK 1: Create a Math Utilities Module
+⭐ CORE TASK 1: Create a Math Utilities Module
 
 Create a module with mathematical utility functions.
 
@@ -54,11 +59,11 @@ def calculate_distance(point1: tuple[float, float], point2: tuple[float, float])
     pass
 
 # =============================================================================
-# TASK 2: Advanced Type Hints with Generics
+# 🔥 RECOMMENDED TASK 2: Advanced Type Hints with Generics (If time allows - 15 minutes)
 # =============================================================================
 
 """
-TASK 2: Create a Generic Repository Pattern
+🔥 RECOMMENDED TASK 2: Create a Generic Repository Pattern
 
 Create a generic repository class that can store and retrieve any type of data.
 
@@ -88,11 +93,11 @@ class Repository(Generic[T]):
     pass
 
 # =============================================================================
-# TASK 3: Protocol-Based Design
+# 💡 EXTENSION TASK 3: Protocol-Based Design (Post-workshop practice - 15 minutes)
 # =============================================================================
 
 """
-TASK 3: Create Drawable Protocol and Implementations
+💡 EXTENSION TASK 3: Create Drawable Protocol and Implementations
 
 Create a protocol for drawable objects and implement concrete classes.
 

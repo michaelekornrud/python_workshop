@@ -1,6 +1,11 @@
 """
 Functions and Exceptions Workshop - Practice Exercises
 
+🎯 WORKSHOP PRIORITY GUIDE:
+- ⭐ CORE TASKS (1-3): Essential for 3-hour workshop - focus on these first
+- 🔥 RECOMMENDED TASKS (4-5): Complete if time allows in workshop
+- 💡 EXTENSION TASKS (6-9): Practice after workshop for deeper learning
+
 Complete the following tasks to practice function design and exception handling.
 Apply the principles from the markdown file to create robust, well-designed functions.
 """
@@ -11,11 +16,11 @@ from functools import wraps  # noqa : F401
 from typing import Any
 
 # =============================================================================
-# TASK 1: Basic Function Design
+# ⭐ CORE TASK 1: Basic Function Design (Essential - 10 minutes)
 # =============================================================================
 
 """
-TASK 1: Calculate Average of Positive Numbers
+⭐ CORE TASK 1: Calculate Average of Positive Numbers
 
 Create a function that calculates the average of positive numbers in a list.
 
@@ -39,11 +44,11 @@ def calculate_positive_average(numbers: list[int | float]) -> float | None:
     pass
 
 # =============================================================================
-# TASK 2: User Creation with Flexible Parameters
+# ⭐ CORE TASK 2: User Creation with Flexible Parameters (Essential - 10 minutes)
 # =============================================================================
 
 """
-TASK 2: Create User Profile Function
+⭐ CORE TASK 2: Create User Profile Function
 
 Create a function that builds user profiles with required and optional information.
 
@@ -68,11 +73,11 @@ def create_user_profile(name: str, email: str, age: int | None = None,
     pass
 
 # =============================================================================
-# TASK 3: Flexible Calculator with *args and **kwargs
+# ⭐ CORE TASK 3: Flexible Calculator with *args and **kwargs (Essential - 12 minutes)
 # =============================================================================
 
 """
-TASK 3: Create a Flexible Calculator Function
+⭐ CORE TASK 3: Create a Flexible Calculator Function
 
 Create a calculator function that can perform operations on any number of arguments.
 
@@ -97,11 +102,11 @@ def flexible_calculator(*args, **kwargs) -> int | float:
     pass
 
 # =============================================================================
-# TASK 4: Input Validation Decorator
+# 🔥 RECOMMENDED TASK 4: Input Validation Decorator (If time allows - 15 minutes)
 # =============================================================================
 
 """
-TASK 4: Create Input Validation Decorator
+🔥 RECOMMENDED TASK 4: Create Input Validation Decorator
 
 Create a decorator that validates function inputs based on specified criteria.
 
@@ -142,11 +147,11 @@ def process_email(email: str) -> str:
     return f"Processing email: {email}"
 
 # =============================================================================
-# TASK 5: Custom Exception Classes for Banking
+# 🔥 RECOMMENDED TASK 5: Custom Exception Classes for Banking (If time allows - 15 minutes)
 # =============================================================================
 
 """
-TASK 5: Create Banking Exception Hierarchy
+🔥 RECOMMENDED TASK 5: Create Banking Exception Hierarchy
 
 Create a banking system with custom exceptions for different error conditions.
 
@@ -186,11 +191,11 @@ def withdraw_money(balance: float, amount: float, daily_limit: float = 10000) ->
     pass
 
 # =============================================================================
-# TASK 6: JSON File Processing with Error Handling
+# 💡 EXTENSION TASK 6: JSON File Processing with Error Handling (Post-workshop practice - 12 minutes)
 # =============================================================================
 
 """
-TASK 6: Safe JSON File Reader
+💡 EXTENSION TASK 6: Safe JSON File Reader
 
 Create a function that safely reads and parses JSON files with comprehensive error handling.
 
@@ -214,11 +219,11 @@ def read_json_file(filename: str) -> dict[str, Any] | list[Any]:
     pass
 
 # =============================================================================
-# TASK 7: User Data Processing with Exception Chaining
+# 💡 EXTENSION TASK 7: User Data Processing with Exception Chaining (Post-workshop - 12 min)
 # =============================================================================
 
 """
-TASK 7: User Data Processor with Exception Chaining
+💡 EXTENSION TASK 7: User Data Processor with Exception Chaining
 
 Create a function that processes user data with proper exception chaining.
 

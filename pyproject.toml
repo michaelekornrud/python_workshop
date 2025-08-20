@@ -1,5 +1,5 @@
 [project]
-name = "ptyhon_workshop"
+name = "python_workshop"
 version = "0.1.0"
 description = "Python workshop for non-Python programmers"
 requires-python = ">=3.11"

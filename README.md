@@ -38,7 +38,17 @@ choco install python
 
 # Or download from python.org
 # Visit https://www.python.org/downloads/windows/
+# IMPORTANT: When using the installer, check "Add Python to PATH" during installation
 ```
+
+**Note for Windows users:** If you installed Python but `python --version` doesn't work in your terminal:
+1. **For manual python.org installation:** Re-run the installer and check "Add Python to PATH"
+2. **Or manually add to PATH:**
+   - Search for "Environment Variables" in Windows Start menu
+   - Click "Environment Variables" → "Path" → "Edit"
+   - Add Python installation directory (usually `C:\Users\<username>\AppData\Local\Programs\Python\Python312\`)
+   - Add Scripts directory (usually `C:\Users\<username>\AppData\Local\Programs\Python\Python312\Scripts\`)
+   - Restart your terminal
 
 #### UV Installation
 

@@ -58,7 +58,5 @@ for item in nested_set:  # Iterating through a nested set
     print(item)  # Print each frozen set
 # Note: Sets are unordered collections, so the order of elements may vary.
 # Use sets when you need unique elements and do not care about order.
-    return [item for sublist in nested for item in sublist]
-    raise NotImplementedError
 
 

@@ -11,14 +11,13 @@ import aiofiles
 import json
 import time
 import random
-import logging
-from typing import List, Dict, Any, Optional, AsyncGenerator, Callable, Union
+from typing import Any
+from collections.abc import AsyncGenerator, Callable
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from collections import defaultdict, deque
-import weakref
 
 # =============================================================================
 # TASK 1: Basic Async/Await and Coroutines - SOLUTION
@@ -45,7 +44,7 @@ async def async_calculator(operation: str, a: float, b: float, delay: float) -> 
     
     return operations[operation](a, b)
 
-async def run_sequential() -> tuple[List[str], float]:
+async def run_sequential() -> tuple[list[str], float]:
     """Run tasks sequentially and return results with timing."""
     start_time = time.time()
     
@@ -58,7 +57,7 @@ async def run_sequential() -> tuple[List[str], float]:
     duration = time.time() - start_time
     return results, duration
 
-async def run_concurrent() -> tuple[List[Any], float]:
+async def run_concurrent() -> tuple[list[Any], float]:
     """Run tasks concurrently and return results with timing."""
     start_time = time.time()
     
@@ -86,7 +85,7 @@ class AsyncHTTPClient:
     def __init__(self, timeout: float = 30.0, max_retries: int = 3):
         self.timeout = aiohttp.ClientTimeout(total=timeout)
         self.max_retries = max_retries
-        self.session: Optional[aiohttp.ClientSession] = None
+        self.session: aiohttp.ClientSession | None = None
         self._request_count = 0
         self._error_count = 0
     
@@ -98,7 +97,7 @@ class AsyncHTTPClient:
         if self.session:
             await self.session.close()
     
-    async def fetch_url(self, url: str, **kwargs) -> Dict[str, Any]:
+    async def fetch_url(self, url: str, **kwargs) -> dict[str, Any]:
         """Fetch single URL with error handling."""
         if not self.session:
             raise RuntimeError("Client not initialized. Use async context manager.")
@@ -127,7 +126,9 @@ class AsyncHTTPClient:
                 "success": False
             }
     
-    async def fetch_multiple(self, urls: List[str], max_concurrent: int = 10) -> List[Dict[str, Any]]:
+    async def fetch_multiple(
+        self, urls: list[str], max_concurrent: int = 10
+    ) -> list[dict[str, Any]]:
         """Fetch multiple URLs concurrently with semaphore control."""
         semaphore = asyncio.Semaphore(max_concurrent)
         
@@ -152,7 +153,7 @@ class AsyncHTTPClient:
         
         return processed_results
     
-    async def fetch_with_retry(self, url: str, max_retries: int = None) -> Dict[str, Any]:
+    async def fetch_with_retry(self, url: str, max_retries: int = None) -> dict[str, Any]:
         """Fetch URL with retry logic and exponential backoff."""
         max_retries = max_retries or self.max_retries
         last_error = None
@@ -180,7 +181,7 @@ class AsyncHTTPClient:
         }
     
     @property
-    def stats(self) -> Dict[str, int]:
+    def stats(self) -> dict[str, int]:
         """Get client statistics."""
         return {
             "total_requests": self._request_count,
@@ -211,10 +212,11 @@ class DataProcessor:
         self.queue: asyncio.Queue = asyncio.Queue(maxsize=queue_size)
         self.stats = ProcessingStats()
         self.running = False
-        self._producer_tasks: List[asyncio.Task] = []
-        self._consumer_tasks: List[asyncio.Task] = []
+        self._producer_tasks: list[asyncio.Task] = []
+        self._consumer_tasks: list[asyncio.Task] = []
         
-    async def producer(self, name: str, items: List[Any], delay_range: tuple[float, float] = (0.1, 0.5)):
+    async def producer(
+            self, name: str, items: list[Any], delay_range: tuple[float, float] = (0.1, 0.5)):
         """Producer that generates work items with random delays."""
         print(f"🏭 Producer {name} starting with {len(items)} items")
         self.stats.producers_active += 1
@@ -246,7 +248,7 @@ class DataProcessor:
             self.stats.producers_active -= 1
             print(f"🏭 Producer {name} finished")
     
-    async def consumer(self, name: str, process_func: Optional[Callable] = None):
+    async def consumer(self, name: str, process_func: Callable | None = None):
         """Consumer that processes work items."""
         print(f"🔧 Consumer {name} starting")
         self.stats.consumers_active += 1
@@ -278,7 +280,7 @@ class DataProcessor:
                     # Mark task as done
                     self.queue.task_done()
                     
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     # Check if we should continue running
                     continue
                 except Exception as e:
@@ -290,7 +292,7 @@ class DataProcessor:
             self.stats.consumers_active -= 1
             print(f"🔧 Consumer {name} stopping")
     
-    async def run_system(self, producers: Dict[str, List[Any]], consumers: List[str], 
+    async def run_system(self, producers: dict[str, list[Any]], consumers: list[str], 
                         timeout: float = 30.0) -> ProcessingStats:
         """Run the complete producer-consumer system."""
         self.running = True
@@ -317,7 +319,7 @@ class DataProcessor:
             await self.queue.join()
             print("📋 All items processed")
             
-        except asyncio.TimeoutError:
+        except TimeoutError:
             print("⏰ System timeout reached")
         finally:
             # Stop the system
@@ -329,8 +331,10 @@ class DataProcessor:
             # Calculate final stats
             self.stats.start_time = datetime.now()
             
-            print(f"📊 Final stats: {self.stats.items_produced} produced, {self.stats.items_consumed} consumed")
-            return self.stats
+            print(f"📊 Final stats: {self.stats.items_produced} produced,"
+                   f" {self.stats.items_consumed} consumed")
+        
+        return self.stats
 
 # =============================================================================
 # TASK 4: Async Context Managers and Resource Management - SOLUTION
@@ -357,7 +361,7 @@ class AsyncDatabaseConnection:
         await asyncio.sleep(0.05)  # Simulate cleanup time
         self.is_connected = False
         
-    async def execute(self, query: str) -> Dict[str, Any]:
+    async def execute(self, query: str) -> dict[str, Any]:
         """Execute database query."""
         if not self.is_connected:
             raise RuntimeError("Not connected to database")
@@ -398,7 +402,7 @@ class AsyncDatabasePool:
         self.connection_string = connection_string
         self.pool_size = pool_size
         self.available_connections: asyncio.Queue = asyncio.Queue(maxsize=pool_size)
-        self.all_connections: List[AsyncDatabaseConnection] = []
+        self.all_connections: list[AsyncDatabaseConnection] = []
         self.stats = {
             "total_connections": 0,
             "active_connections": 0,
@@ -440,7 +444,7 @@ class AsyncDatabasePool:
             self.stats["active_connections"] -= 1
             await self.available_connections.put(conn)
     
-    async def execute_query(self, query: str) -> Dict[str, Any]:
+    async def execute_query(self, query: str) -> dict[str, Any]:
         """Execute query using pool connection."""
         async with self.get_connection() as conn:
             result = await conn.execute(query)
@@ -481,7 +485,7 @@ class AsyncFileManager:
     async def _create_backup(self):
         """Create backup of existing file."""
         try:
-            async with aiofiles.open(self.filepath, 'r', encoding=self.encoding) as f:
+            async with aiofiles.open(self.filepath, encoding=self.encoding) as f:
                 content = await f.read()
             
             backup_path = f"{self.filepath}.backup"
@@ -499,35 +503,35 @@ class AsyncFileManager:
         """Restore file from backup."""
         backup_path = f"{self.filepath}.backup"
         try:
-            async with aiofiles.open(backup_path, 'r', encoding=self.encoding) as f:
+            async with aiofiles.open(backup_path, encoding=self.encoding) as f:
                 content = await f.read()
             
             async with aiofiles.open(self.filepath, 'w', encoding=self.encoding) as f:
                 await f.write(content)
             
-            print(f"📁 File restored from backup")
+            print("📁 File restored from backup")
         except FileNotFoundError:
             pass
     
-    async def read_json(self) -> Dict[str, Any]:
+    async def read_json(self) -> dict[str, Any]:
         """Read JSON data from file."""
         try:
-            async with aiofiles.open(self.filepath, 'r', encoding=self.encoding) as f:
+            async with aiofiles.open(self.filepath, encoding=self.encoding) as f:
                 content = await f.read()
                 return json.loads(content) if content.strip() else {}
         except FileNotFoundError:
             return {}
         except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON in file {self.filepath}: {e}")
+            raise ValueError(f"Invalid JSON in file {self.filepath}: {e}") from e 
     
-    async def write_json(self, data: Dict[str, Any], indent: int = 2) -> None:
+    async def write_json(self, data: dict[str, Any], indent: int = 2) -> None:
         """Write JSON data to file."""
         json_content = json.dumps(data, indent=indent, ensure_ascii=False)
         
         async with aiofiles.open(self.filepath, 'w', encoding=self.encoding) as f:
             await f.write(json_content)
     
-    async def append_json_line(self, data: Dict[str, Any]) -> None:
+    async def append_json_line(self, data: dict[str, Any]) -> None:
         """Append JSON line to file (JSONL format)."""
         json_line = json.dumps(data, ensure_ascii=False) + "\n"
         
@@ -576,7 +580,7 @@ class AsyncDataStream:
     
     async def _next_from_api(self):
         """Get next item from API source."""
-        base_url = self.config["base_url"]
+        base_url = self.config["base_url"]  # noqa : F841
         page_size = self.config["page_size"]
         max_pages = self.config.get("max_pages")
         
@@ -628,7 +632,8 @@ class AsyncDataStream:
         
         await asyncio.sleep(0.1)
         
-        item = await generator_func(self.current_position, *self.config["args"], **self.config["kwargs"])
+        item = await generator_func(
+            self.current_position, *self.config["args"], **self.config["kwargs"])
         self.current_position += 1
         return item
 
@@ -689,7 +694,7 @@ class AsyncDataProcessor:
                 continue
     
     async def batch_stream(self, stream: AsyncDataStream, 
-                          batch_size: int) -> AsyncGenerator[List[Any], None]:
+                          batch_size: int) -> AsyncGenerator[list[Any], None]:
         """Batch items from stream into groups."""
         batch = []
         
@@ -751,7 +756,7 @@ class CircuitBreaker:
         
         self.failure_count = 0
         self.success_count = 0
-        self.last_failure_time: Optional[datetime] = None
+        self.last_failure_time: datetime | None = None
         self.state = CircuitBreakerState.CLOSED
         
     async def call(self, func: Callable, *args, **kwargs):
@@ -817,12 +822,12 @@ class AsyncTaskManager:
     """Advanced task manager with concurrency control."""
     
     def __init__(self):
-        self.circuit_breakers: Dict[str, CircuitBreaker] = {}
-        self.rate_limiters: Dict[str, Dict] = {}
+        self.circuit_breakers: dict[str, CircuitBreaker] = {}
+        self.rate_limiters: dict[str, dict] = {}
         self.task_stats = defaultdict(int)
         
-    async def run_with_semaphore(self, tasks: List[Callable], 
-                                max_concurrent: int = 5) -> List[Any]:
+    async def run_with_semaphore(self, tasks: list[Callable], 
+                                max_concurrent: int = 5) -> list[Any]:
         """Run tasks with semaphore-controlled concurrency."""
         semaphore = asyncio.Semaphore(max_concurrent)
         
@@ -839,8 +844,8 @@ class AsyncTaskManager:
         self.task_stats["semaphore_controlled"] += len(tasks)
         return results
     
-    async def run_with_timeout(self, tasks: List[Callable], 
-                              timeout: float) -> List[Any]:
+    async def run_with_timeout(self, tasks: list[Callable], 
+                              timeout: float) -> list[Any]:
         """Run tasks with timeout management."""
         async def timeout_task(task_func):
             try:
@@ -851,7 +856,7 @@ class AsyncTaskManager:
                         asyncio.get_event_loop().run_in_executor(None, task_func), 
                         timeout=timeout
                     )
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 return {"error": "timeout", "timeout": timeout}
         
         task_coroutines = [timeout_task(task) for task in tasks]
@@ -941,7 +946,7 @@ class AsyncTaskManager:
 # Helper function for testing (demo generator)
 # =============================================================================
 
-async def demo_generator(index: int, prefix: str = "gen") -> Dict[str, Any]:
+async def demo_generator(index: int, prefix: str = "gen") -> dict[str, Any]:
     """Demo generator function for async streams."""
     await asyncio.sleep(0.1)
     return {
@@ -1002,7 +1007,8 @@ async def demonstrate_all_tasks():
     consumers = ["Consumer-1", "Consumer-2"]
     
     stats = await processor.run_system(producers, consumers, timeout=10.0)
-    print(f"Processing completed: {stats.items_produced} produced, {stats.items_consumed} consumed\n")
+    print(f"Processing completed: {stats.items_produced} produced,"
+        f"{stats.items_consumed} consumed\n")
     
     # Task 4: Context Managers
     print("=" * 50)
@@ -1033,7 +1039,8 @@ async def demonstrate_all_tasks():
     stream = AsyncDataStream.from_generator(demo_generator, "demo")
     
     # Transform stream
-    transform_func = lambda item: f"transformed-{item['data']}"
+    def transform_func(item):
+        return f"transformed-{item['data']}"
     
     print("Processing async stream:")
     count = 0

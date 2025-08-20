@@ -6,9 +6,10 @@ Apply the principles from the async_programming.md file to build concurrent, eff
 """
 
 import asyncio
-import aiohttp
+import aiohttp  # type: ignore
 import time
-from typing import List, Dict, Any, Optional, AsyncGenerator
+from typing import Any
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import datetime
@@ -43,11 +44,11 @@ async def async_calculator(operation: str, a: float, b: float, delay: float) -> 
     """Your async calculator function here"""
     pass
 
-async def run_sequential() -> tuple[List[str], float]:
+async def run_sequential() -> tuple[list[str], float]:
     """Run tasks sequentially and return results with timing"""
     pass
 
-async def run_concurrent() -> tuple[List[Any], float]:
+async def run_concurrent() -> tuple[list[Any], float]:
     """Run tasks concurrently and return results with timing"""
     pass
 
@@ -410,11 +411,12 @@ def measure_time(func):
     """Decorator to measure async function execution time"""
     pass
 
-async def simulate_network_call(url: str, delay: float = 1.0, success_rate: float = 0.9) -> Dict[str, Any]:
+async def simulate_network_call(
+        url: str, delay: float = 1.0, success_rate: float = 0.9) -> dict[str, Any]:
     """Simulate a network call with configurable delay and success rate"""
     pass
 
-async def simulate_database_operation(operation: str, delay: float = 0.5) -> Dict[str, Any]:
+async def simulate_database_operation(operation: str, delay: float = 0.5) -> dict[str, Any]:
     """Simulate database operations for testing"""
     pass
 

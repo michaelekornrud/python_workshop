@@ -123,7 +123,7 @@ def concatenate_strings(a: str, b: str) -> str:
 # Function with Optional Parameters
 # You can use `Optional` from the `typing` module to indicate that a parameter can be `None`.
 from typing import Optional # This is preffered up to Python 3.9
-def greet_optional(name: Optional[str] = None) -> str:
+def greet_optional(name: str | None = None) -> str:
     """Function to greet a person, with an optional name."""
     if name is None:
         return "Hello, stranger!"
@@ -152,7 +152,7 @@ def positional_only_function(a, b, /, c):
 # Function with Type Aliases
 # You can create type aliases for better readability.
 from typing import List, Tuple
-Vector = List[float]  # Type alias for a list of floats
+Vector = list[float]  # Type alias for a list of floats
 def vector_add(v1: Vector, v2: Vector) -> Vector:
     """Function to add two vectors."""
     return [x + y for x, y in zip(v1, v2)]
@@ -209,7 +209,7 @@ def logged_function(param: str):
 # Function with Type Guards
 # Type guards can be used to narrow down types within a function.
 from typing import Union, TypeGuard
-def is_str_list(value: Union[str, list]) -> TypeGuard[list]:
+def is_str_list(value: str | list) -> TypeGuard[list]:
     """Type guard to check if value is a list of strings."""
     return isinstance(value, list) and all(isinstance(item, str) for item in value)
 

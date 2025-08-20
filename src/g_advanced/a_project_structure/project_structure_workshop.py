@@ -10,11 +10,9 @@ Complete each task by implementing the required functionality.
 Focus on proper structure, clear organization, and maintainable code.
 """
 
-import os
-from pathlib import Path
-from typing import Dict, List, Optional, Any
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Any
 
 print("🏗️  Python Project Structure Workshop")
 print("=" * 50)
@@ -129,23 +127,23 @@ class ConfigurationManager:
         # TODO: Initialize configuration manager
         pass
     
-    def load_from_file(self, filename: str) -> Dict[str, Any]:
+    def load_from_file(self, filename: str) -> dict[str, Any]:
         """Load configuration from file (JSON or YAML)."""
         # TODO: Implement file loading with format detection
         pass
     
-    def load_from_env(self, prefix: str = "APP_") -> Dict[str, Any]:
+    def load_from_env(self, prefix: str = "APP_") -> dict[str, Any]:
         """Load configuration from environment variables."""
         # TODO: Implement environment variable loading
         pass
     
-    def merge_configs(self, *sources: Dict[str, Any]) -> Dict[str, Any]:
+    def merge_configs(self, *sources: dict[str, Any]) -> dict[str, Any]:
         """Merge multiple configuration sources."""
         # TODO: Implement configuration merging with proper precedence
         pass
 
 # Task 2.3: Configuration validation
-def validate_config(config: Dict[str, Any]) -> List[str]:
+def validate_config(config: dict[str, Any]) -> list[str]:
     """Validate configuration and return list of errors."""
     # TODO: Implement configuration validation
     # Check required fields, valid values, etc.
@@ -173,16 +171,16 @@ Requirements:
 class BaseModel(ABC):
     """Base class for all data models."""
     
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs): # noqa : B027
         # TODO: Implement base model initialization
         pass
     
     @abstractmethod
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate model data and return errors."""
         pass
     
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]: # noqa : B027
         """Convert model to dictionary."""
         # TODO: Implement model serialization
         pass
@@ -194,7 +192,7 @@ class User(BaseModel):
         # TODO: Implement user initialization with validation
         pass
     
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate user data."""
         # TODO: Implement user validation
         pass
@@ -206,7 +204,7 @@ class Product(BaseModel):
         # TODO: Implement product initialization
         pass
     
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate product data."""
         # TODO: Implement product validation
         pass
@@ -222,12 +220,12 @@ class BaseService:
 class UserService(BaseService):
     """Service for user-related business logic."""
     
-    def create_user(self, user_data: Dict[str, Any]) -> User:
+    def create_user(self, user_data: dict[str, Any]) -> User:
         """Create a new user with validation."""
         # TODO: Implement user creation with business logic
         pass
     
-    def authenticate_user(self, username: str, password: str) -> Optional[User]:
+    def authenticate_user(self, username: str, password: str) -> User | None:
         """Authenticate user credentials."""
         # TODO: Implement user authentication
         pass
@@ -235,7 +233,7 @@ class UserService(BaseService):
 class ProductService(BaseService):
     """Service for product-related business logic."""
     
-    def create_product(self, product_data: Dict[str, Any]) -> Product:
+    def create_product(self, product_data: dict[str, Any]) -> Product:
         """Create a new product."""
         # TODO: Implement product creation
         pass
@@ -255,12 +253,12 @@ class Repository(ABC):
         pass
     
     @abstractmethod
-    def find_by_id(self, entity_id: int) -> Optional[BaseModel]:
+    def find_by_id(self, entity_id: int) -> BaseModel | None:
         """Find entity by ID."""
         pass
     
     @abstractmethod
-    def find_all(self) -> List[BaseModel]:
+    def find_all(self) -> list[BaseModel]:
         """Find all entities."""
         pass
 
@@ -275,11 +273,11 @@ class InMemoryRepository(Repository):
         # TODO: Implement save logic
         pass
     
-    def find_by_id(self, entity_id: int) -> Optional[BaseModel]:
+    def find_by_id(self, entity_id: int) -> BaseModel | None:
         # TODO: Implement find by ID
         pass
     
-    def find_all(self) -> List[BaseModel]:
+    def find_all(self) -> list[BaseModel]:
         # TODO: Implement find all
         pass
 
@@ -310,7 +308,7 @@ class Plugin(ABC):
     description: str = ""
     
     @abstractmethod
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         """Initialize the plugin with configuration."""
         pass
     
@@ -319,7 +317,7 @@ class Plugin(ABC):
         """Execute the plugin's main functionality."""
         pass
     
-    def cleanup(self) -> None:
+    def cleanup(self) -> None: # noqa : B027
         """Clean up plugin resources."""
         # TODO: Implement default cleanup
         pass
@@ -337,7 +335,7 @@ class PluginManager:
         # TODO: Implement plugin registration
         pass
     
-    def load_plugin(self, name: str, config: Dict[str, Any] = None) -> None:
+    def load_plugin(self, name: str, config: dict[str, Any] = None) -> None:
         """Load and initialize a plugin."""
         # TODO: Implement plugin loading
         pass
@@ -347,7 +345,7 @@ class PluginManager:
         # TODO: Implement plugin execution
         pass
     
-    def list_plugins(self) -> List[str]:
+    def list_plugins(self) -> list[str]:
         """List all registered plugins."""
         # TODO: Return list of plugin names
         pass
@@ -360,7 +358,7 @@ class EmailPlugin(Plugin):
     version = "1.0.0"
     description = "Send emails via SMTP"
     
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         # TODO: Initialize email configuration
         pass
     
@@ -375,7 +373,7 @@ class LoggingPlugin(Plugin):
     version = "1.0.0"
     description = "Enhanced logging functionality"
     
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         # TODO: Initialize logging configuration
         pass
     
@@ -459,7 +457,7 @@ class UserRepository:
         # TODO: Initialize repository with database dependency
         pass
 
-class UserService:
+class UserService: # noqa : F811
     """User service with repository dependency."""
     
     def __init__(self, user_repository: UserRepository):
@@ -554,7 +552,7 @@ class TestHelpers:
         pass
     
     @staticmethod
-    def generate_test_data(count: int, data_type: str) -> List[Any]:
+    def generate_test_data(count: int, data_type: str) -> list[Any]:
         """Generate test data of specified type."""
         # TODO: Implement test data generation
         pass

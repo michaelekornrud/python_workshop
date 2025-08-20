@@ -165,7 +165,7 @@ service.send_password_reset(user, reset_token)
 
 class EmailProvider:
     """External email provider interface (to be mocked)"""
-    def send_email(self, to: str, subject: str, body: str) -> Dict[str, Any]:
+    def send_email(self, to: str, subject: str, body: str) -> dict[str, Any]:
         """Send email and return result"""
         pass
 

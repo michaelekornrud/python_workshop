@@ -198,7 +198,7 @@ class MathConstants:
         return constants[name.lower()]
     
     @classmethod
-    def list_constants(cls) -> List[str]:
+    def list_constants(cls) -> list[str]:
         """List all available constants."""
         return ['pi', 'e', 'golden_ratio', 'euler_gamma']
 
@@ -210,7 +210,7 @@ class Calculator:
         self.basic = BasicOperations()
         self.advanced = AdvancedOperations()
         self.constants = MathConstants()
-        self.history: List[str] = []
+        self.history: list[str] = []
     
     def add(self, a: float, b: float) -> float:
         """Add two numbers."""
@@ -248,7 +248,7 @@ class Calculator:
         self.history.append(f"sqrt({value}) = {result}")
         return result
     
-    def get_history(self) -> List[str]:
+    def get_history(self) -> list[str]:
         """Get calculation history."""
         return self.history.copy()
     
@@ -297,7 +297,7 @@ class CacheConfig:
     max_size: int = 1000
     
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "CacheConfig":
+    def from_dict(cls, data: dict[str, Any]) -> "CacheConfig":
         """Create configuration from dictionary."""
         return cls(
             enabled=data.get("enabled", True),
@@ -322,7 +322,7 @@ class AppConfig:
         if errors:
             raise ValueError(f"Configuration validation failed: {', '.join(errors)}")
     
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate configuration and return list of errors."""
         errors = []
         
@@ -372,9 +372,9 @@ class ConfigurationManager:
     
     def __init__(self, config_dir: str = "config"):
         self.config_dir = Path(config_dir)
-        self._cache: Dict[str, Any] = {}
+        self._cache: dict[str, Any] = {}
     
-    def load_from_file(self, filename: str) -> Dict[str, Any]:
+    def load_from_file(self, filename: str) -> dict[str, Any]:
         """Load configuration from file (JSON or YAML)."""
         if filename in self._cache:
             return self._cache[filename]
@@ -399,7 +399,7 @@ class ConfigurationManager:
         except (json.JSONDecodeError, yaml.YAMLError) as e:
             raise ValueError(f"Error parsing configuration file {filename}: {e}")
     
-    def load_from_env(self, prefix: str = "APP_") -> Dict[str, Any]:
+    def load_from_env(self, prefix: str = "APP_") -> dict[str, Any]:
         """Load configuration from environment variables."""
         config = {}
         
@@ -420,7 +420,7 @@ class ConfigurationManager:
         
         return config
     
-    def merge_configs(self, *sources: Dict[str, Any]) -> Dict[str, Any]:
+    def merge_configs(self, *sources: dict[str, Any]) -> dict[str, Any]:
         """Merge multiple configuration sources with proper precedence."""
         merged = {}
         
@@ -429,7 +429,7 @@ class ConfigurationManager:
         
         return merged
     
-    def _deep_merge(self, target: Dict[str, Any], source: Dict[str, Any]) -> None:
+    def _deep_merge(self, target: dict[str, Any], source: dict[str, Any]) -> None:
         """Recursively merge dictionaries."""
         for key, value in source.items():
             if key in target and isinstance(target[key], dict) and isinstance(value, dict):
@@ -437,7 +437,7 @@ class ConfigurationManager:
             else:
                 target[key] = value
 
-def validate_config(config: Dict[str, Any]) -> List[str]:
+def validate_config(config: dict[str, Any]) -> list[str]:
     """Validate configuration and return list of errors."""
     errors = []
     required_fields = ["secret_key", "environment"]
@@ -468,7 +468,7 @@ class BaseModel(ABC):
     """Base class for all data models."""
     
     def __init__(self, **kwargs):
-        self.id: Optional[int] = kwargs.get('id')
+        self.id: int | None = kwargs.get('id')
         self.created_at: datetime = kwargs.get('created_at', datetime.now())
         self.updated_at: datetime = kwargs.get('updated_at', datetime.now())
         
@@ -478,11 +478,11 @@ class BaseModel(ABC):
             raise ValueError(f"Model validation failed: {', '.join(errors)}")
     
     @abstractmethod
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate model data and return errors."""
         pass
     
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert model to dictionary."""
         result = {}
         for key, value in self.__dict__.items():
@@ -525,7 +525,7 @@ class User(BaseModel):
         self.last_name = kwargs.get('last_name', '')
         super().__init__(**kwargs)
     
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate user data."""
         errors = []
         
@@ -576,7 +576,7 @@ class Product(BaseModel):
         self.is_active = kwargs.get('is_active', True)
         super().__init__(**kwargs)
     
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate product data."""
         errors = []
         
@@ -614,7 +614,7 @@ class BaseService:
 class UserService(BaseService):
     """Service for user-related business logic."""
     
-    def create_user(self, user_data: Dict[str, Any]) -> User:
+    def create_user(self, user_data: dict[str, Any]) -> User:
         """Create a new user with validation and business rules."""
         # Check if username already exists
         if self.repository:
@@ -632,7 +632,7 @@ class UserService(BaseService):
         self.logger.info(f"Created user: {user.username}")
         return user
     
-    def authenticate_user(self, username: str, password: str) -> Optional[User]:
+    def authenticate_user(self, username: str, password: str) -> User | None:
         """Authenticate user credentials."""
         if not self.repository:
             raise RuntimeError("Repository not configured")
@@ -664,7 +664,7 @@ class UserService(BaseService):
 class ProductService(BaseService):
     """Service for product-related business logic."""
     
-    def create_product(self, product_data: Dict[str, Any]) -> Product:
+    def create_product(self, product_data: dict[str, Any]) -> Product:
         """Create a new product with business rules."""
         # Generate SKU if not provided
         if 'sku' not in product_data:
@@ -722,12 +722,12 @@ class Repository(ABC):
         pass
     
     @abstractmethod
-    def find_by_id(self, entity_id: int) -> Optional[T]:
+    def find_by_id(self, entity_id: int) -> T | None:
         """Find entity by ID."""
         pass
     
     @abstractmethod
-    def find_all(self) -> List[T]:
+    def find_all(self) -> list[T]:
         """Find all entities."""
         pass
     
@@ -740,7 +740,7 @@ class InMemoryRepository(Repository):
     """In-memory repository implementation."""
     
     def __init__(self):
-        self._storage: Dict[int, BaseModel] = {}
+        self._storage: dict[int, BaseModel] = {}
         self._next_id = 1
         self._lock = threading.Lock()
     
@@ -755,11 +755,11 @@ class InMemoryRepository(Repository):
             self._storage[entity.id] = entity
             return entity
     
-    def find_by_id(self, entity_id: int) -> Optional[BaseModel]:
+    def find_by_id(self, entity_id: int) -> BaseModel | None:
         """Find entity by ID."""
         return self._storage.get(entity_id)
     
-    def find_all(self) -> List[BaseModel]:
+    def find_all(self) -> list[BaseModel]:
         """Find all entities."""
         return list(self._storage.values())
     
@@ -771,14 +771,14 @@ class InMemoryRepository(Repository):
                 return True
             return False
     
-    def find_by_username(self, username: str) -> Optional[User]:
+    def find_by_username(self, username: str) -> User | None:
         """Find user by username."""
         for entity in self._storage.values():
             if isinstance(entity, User) and entity.username == username:
                 return entity
         return None
     
-    def find_by_category(self, category: ProductCategory) -> List[Product]:
+    def find_by_category(self, category: ProductCategory) -> list[Product]:
         """Find products by category."""
         return [
             entity for entity in self._storage.values()
@@ -802,15 +802,15 @@ class Plugin(ABC):
     name: str = ""
     version: str = "1.0.0"
     description: str = ""
-    dependencies: List[str] = []
+    dependencies: list[str] = []
     
     def __init__(self):
         self.state = PluginState.UNLOADED
-        self.config: Dict[str, Any] = {}
-        self._error_message: Optional[str] = None
+        self.config: dict[str, Any] = {}
+        self._error_message: str | None = None
     
     @abstractmethod
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         """Initialize the plugin with configuration."""
         pass
     
@@ -824,7 +824,7 @@ class Plugin(ABC):
         self.state = PluginState.UNLOADED
         self.config.clear()
     
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """Get plugin information."""
         return {
             "name": self.name,
@@ -839,8 +839,8 @@ class PluginManager:
     """Manage and coordinate plugins with dependency resolution."""
     
     def __init__(self):
-        self._plugins: Dict[str, Plugin] = {}
-        self._load_order: List[str] = []
+        self._plugins: dict[str, Plugin] = {}
+        self._load_order: list[str] = []
         self.logger = logging.getLogger(self.__class__.__name__)
     
     def register_plugin(self, plugin: Plugin) -> None:
@@ -854,7 +854,7 @@ class PluginManager:
         self._plugins[plugin.name] = plugin
         self.logger.info(f"Registered plugin: {plugin.name}")
     
-    def load_plugin(self, name: str, config: Dict[str, Any] = None) -> None:
+    def load_plugin(self, name: str, config: dict[str, Any] = None) -> None:
         """Load and initialize a plugin with dependency resolution."""
         if name not in self._plugins:
             raise ValueError(f"Plugin {name} not registered")
@@ -927,18 +927,18 @@ class PluginManager:
             self.logger.error(f"Error executing plugin {name}: {e}")
             raise
     
-    def list_plugins(self) -> List[str]:
+    def list_plugins(self) -> list[str]:
         """List all registered plugins."""
         return list(self._plugins.keys())
     
-    def get_plugin_info(self, name: str) -> Dict[str, Any]:
+    def get_plugin_info(self, name: str) -> dict[str, Any]:
         """Get information about a specific plugin."""
         if name not in self._plugins:
             raise ValueError(f"Plugin {name} not found")
         
         return self._plugins[name].get_info()
     
-    def _find_dependents(self, plugin_name: str) -> List[str]:
+    def _find_dependents(self, plugin_name: str) -> list[str]:
         """Find plugins that depend on the given plugin."""
         dependents = []
         for name, plugin in self._plugins.items():
@@ -954,7 +954,7 @@ class EmailPlugin(Plugin):
     version = "1.0.0"
     description = "Send emails via SMTP"
     
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         """Initialize email configuration."""
         self.smtp_server = config.get("smtp_server", "localhost")
         self.smtp_port = config.get("smtp_port", 587)
@@ -982,7 +982,7 @@ class LoggingPlugin(Plugin):
     version = "1.0.0" 
     description = "Enhanced logging functionality"
     
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         """Initialize logging configuration."""
         self.log_level = config.get("log_level", "INFO")
         self.log_format = config.get("log_format", "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -1020,11 +1020,11 @@ class CachePlugin(Plugin):
     description = "Simple in-memory caching"
     dependencies = ["logging"]
     
-    def initialize(self, config: Dict[str, Any]) -> None:
+    def initialize(self, config: dict[str, Any]) -> None:
         """Initialize cache configuration."""
         self.max_size = config.get("max_size", 1000)
         self.ttl = config.get("ttl", 3600)  # Time to live in seconds
-        self._cache: Dict[str, Dict[str, Any]] = {}
+        self._cache: dict[str, dict[str, Any]] = {}
         
         self.state = PluginState.LOADED
     
@@ -1076,7 +1076,7 @@ class CachePlugin(Plugin):
         """Clear all cache entries."""
         self._cache.clear()
     
-    def _is_expired(self, entry: Dict[str, Any]) -> bool:
+    def _is_expired(self, entry: dict[str, Any]) -> bool:
         """Check if cache entry is expired."""
         age = (datetime.now() - entry["timestamp"]).total_seconds()
         return age > self.ttl
@@ -1098,15 +1098,15 @@ class ServiceRegistration:
     implementation: Type
     lifetime: ServiceLifetime
     instance: Any = None
-    factory: Optional[Callable] = None
+    factory: Callable | None = None
 
 class ServiceContainer:
     """Container for dependency injection with advanced features."""
     
     def __init__(self):
-        self._registrations: Dict[Type, ServiceRegistration] = {}
-        self._singletons: Dict[Type, Any] = {}
-        self._scoped_instances: Dict[Type, Any] = {}
+        self._registrations: dict[Type, ServiceRegistration] = {}
+        self._singletons: dict[Type, Any] = {}
+        self._scoped_instances: dict[Type, Any] = {}
         self._resolving: set = set()  # Circular dependency detection
         self.logger = logging.getLogger(self.__class__.__name__)
     
@@ -1233,7 +1233,7 @@ class ServiceContainer:
         """Clear scoped instances."""
         self._scoped_instances.clear()
     
-    def get_registrations(self) -> Dict[Type, ServiceRegistration]:
+    def get_registrations(self) -> dict[Type, ServiceRegistration]:
         """Get all service registrations."""
         return self._registrations.copy()
 
@@ -1283,7 +1283,7 @@ class DatabaseConnection:
         self.is_connected = False
         self.logger.info("Disconnected from database")
     
-    def execute(self, query: str) -> List[Dict[str, Any]]:
+    def execute(self, query: str) -> list[dict[str, Any]]:
         """Execute database query."""
         if not self.is_connected:
             raise RuntimeError("Not connected to database")
@@ -1306,7 +1306,7 @@ class UserRepository:
         self.logger.info(f"Saved user: {user.username}")
         return user
     
-    def find_by_username(self, username: str) -> Optional[User]:
+    def find_by_username(self, username: str) -> User | None:
         """Find user by username."""
         query = f"SELECT * FROM users WHERE username = '{username}'"
         results = self.db_connection.execute(query)
@@ -1506,7 +1506,7 @@ class TestHelpers:
         return is_valid
     
     @staticmethod
-    def generate_test_data(count: int, data_type: str) -> List[Any]:
+    def generate_test_data(count: int, data_type: str) -> list[Any]:
         """Generate test data of specified type."""
         if data_type == "users":
             return [

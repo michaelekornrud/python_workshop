@@ -25,7 +25,7 @@ This workshop includes several Python development tools:
 brew install python
 
 # Or download from python.org
-# Visit https://www.python.org/downloads/macos/
+Visit https://www.python.org/downloads/macos/
 ```
 
 **Windows:**
@@ -37,8 +37,8 @@ winget install Python.Python.3.12
 choco install python
 
 # Or download from python.org
-# Visit https://www.python.org/downloads/windows/
-# IMPORTANT: When using the installer, check "Add Python to PATH" during installation
+Visit https://www.python.org/downloads/windows/
+IMPORTANT: When using the installer, check "Add Python to PATH" during installation
 ```
 
 **Note for Windows users:** If you installed Python but `python --version` doesn't work in your terminal:

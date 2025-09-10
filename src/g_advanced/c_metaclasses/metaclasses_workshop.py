@@ -132,6 +132,7 @@ class Descriptor(ABC):
     def __init__(self, name: str = None):
         # Your implementation here
         pass
+
     
     def __set_name__(self, owner, name):
         """Called when descriptor is assigned to class attribute"""

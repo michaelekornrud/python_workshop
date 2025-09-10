@@ -12,7 +12,7 @@ import yaml
 import logging
 import inspect
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Type, TypeVar, Callable, Union
+from typing import Any, type, typeVar, Callable
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 from enum import Enum
@@ -87,7 +87,7 @@ class BasicOperations:
         return a / b
 
 # Task 1.2: Advanced Operations Module
-import math
+import math  # noqa : E402
 
 class AdvancedOperations:
     """Advanced mathematical operations with error handling."""
@@ -385,7 +385,7 @@ class ConfigurationManager:
             raise FileNotFoundError(f"Configuration file not found: {config_path}")
         
         try:
-            with open(config_path, 'r') as f:
+            with open(config_path) as f:
                 if filename.endswith('.json'):
                     config = json.load(f)
                 elif filename.endswith(('.yml', '.yaml')):
@@ -397,7 +397,7 @@ class ConfigurationManager:
             return config
             
         except (json.JSONDecodeError, yaml.YAMLError) as e:
-            raise ValueError(f"Error parsing configuration file {filename}: {e}")
+            raise ValueError(f"Error parsing configuration file {filename}: {e}") from e
     
     def load_from_env(self, prefix: str = "APP_") -> dict[str, Any]:
         """Load configuration from environment variables."""
@@ -442,9 +442,9 @@ def validate_config(config: dict[str, Any]) -> list[str]:
     errors = []
     required_fields = ["secret_key", "environment"]
     
-    for field in required_fields:
-        if field not in config or not config[field]:
-            errors.append(f"Required field missing: {field}")
+    for f in required_fields:
+        if f not in config or not config[f]:
+            errors.append(f"Required field missing: {f}")
     
     # Validate database configuration
     if "database" in config:
@@ -453,9 +453,9 @@ def validate_config(config: dict[str, Any]) -> list[str]:
             errors.append("Database configuration must be a dictionary")
         else:
             required_db_fields = ["host", "port", "name"]
-            for field in required_db_fields:
-                if field not in db_config:
-                    errors.append(f"Required database field missing: {field}")
+            for f in required_db_fields:
+                if f not in db_config:
+                    errors.append(f"Required database field missing: {f}")
     
     return errors
 
@@ -711,7 +711,7 @@ class ProductService(BaseService):
         return f"PRD-{name_hash}"
 
 # Task 3.3: Repository Pattern
-T = TypeVar('T', bound=BaseModel)
+T = typeVar('T', bound=BaseModel)
 
 class Repository(ABC):
     """Abstract repository for data access."""
@@ -1094,8 +1094,8 @@ class ServiceLifetime(Enum):
 @dataclass
 class ServiceRegistration:
     """Service registration information."""
-    interface: Type
-    implementation: Type
+    interface: type
+    implementation: type
     lifetime: ServiceLifetime
     instance: Any = None
     factory: Callable | None = None
@@ -1104,13 +1104,13 @@ class ServiceContainer:
     """Container for dependency injection with advanced features."""
     
     def __init__(self):
-        self._registrations: dict[Type, ServiceRegistration] = {}
-        self._singletons: dict[Type, Any] = {}
-        self._scoped_instances: dict[Type, Any] = {}
+        self._registrations: dict[type, ServiceRegistration] = {}
+        self._singletons: dict[type, Any] = {}
+        self._scoped_instances: dict[type, Any] = {}
         self._resolving: set = set()  # Circular dependency detection
         self.logger = logging.getLogger(self.__class__.__name__)
     
-    def register_singleton(self, interface: Type, implementation: Type = None) -> None:
+    def register_singleton(self, interface: type, implementation: type = None) -> None:
         """Register a singleton service."""
         implementation = implementation or interface
         self._registrations[interface] = ServiceRegistration(
@@ -1120,7 +1120,7 @@ class ServiceContainer:
         )
         self.logger.debug(f"Registered singleton: {interface.__name__} -> {implementation.__name__}")
     
-    def register_transient(self, interface: Type, implementation: Type = None) -> None:
+    def register_transient(self, interface: type, implementation: type = None) -> None:
         """Register a transient service."""
         implementation = implementation or interface
         self._registrations[interface] = ServiceRegistration(
@@ -1130,7 +1130,7 @@ class ServiceContainer:
         )
         self.logger.debug(f"Registered transient: {interface.__name__} -> {implementation.__name__}")
     
-    def register_scoped(self, interface: Type, implementation: Type = None) -> None:
+    def register_scoped(self, interface: type, implementation: type = None) -> None:
         """Register a scoped service."""
         implementation = implementation or interface
         self._registrations[interface] = ServiceRegistration(
@@ -1140,7 +1140,7 @@ class ServiceContainer:
         )
         self.logger.debug(f"Registered scoped: {interface.__name__} -> {implementation.__name__}")
     
-    def register_instance(self, interface: Type, instance: Any) -> None:
+    def register_instance(self, interface: type, instance: Any) -> None:
         """Register a specific instance."""
         self._registrations[interface] = ServiceRegistration(
             interface=interface,
@@ -1151,7 +1151,7 @@ class ServiceContainer:
         self._singletons[interface] = instance
         self.logger.debug(f"Registered instance: {interface.__name__}")
     
-    def register_factory(self, interface: Type, factory: Callable, lifetime: ServiceLifetime = ServiceLifetime.TRANSIENT) -> None:
+    def register_factory(self, interface: type, factory: Callable, lifetime: ServiceLifetime = ServiceLifetime.TRANSIENT) -> None:
         """Register a factory function."""
         self._registrations[interface] = ServiceRegistration(
             interface=interface,
@@ -1161,7 +1161,7 @@ class ServiceContainer:
         )
         self.logger.debug(f"Registered factory: {interface.__name__}")
     
-    def resolve(self, service_type: Type) -> Any:
+    def resolve(self, service_type: type) -> Any:
         """Resolve a service and its dependencies."""
         if service_type in self._resolving:
             raise RuntimeError(f"Circular dependency detected: {service_type.__name__}")
@@ -1233,14 +1233,14 @@ class ServiceContainer:
         """Clear scoped instances."""
         self._scoped_instances.clear()
     
-    def get_registrations(self) -> dict[Type, ServiceRegistration]:
+    def get_registrations(self) -> dict[type, ServiceRegistration]:
         """Get all service registrations."""
         return self._registrations.copy()
 
 # Task 5.2: Service Decorators
 _global_container = ServiceContainer()
 
-def singleton(interface: Type = None):
+def singleton(interface: type = None):
     """Decorator to register a class as singleton."""
     def decorator(cls):
         target_interface = interface or cls
@@ -1248,7 +1248,7 @@ def singleton(interface: Type = None):
         return cls
     return decorator
 
-def transient(interface: Type = None):
+def transient(interface: type = None):
     """Decorator to register a class as transient.""" 
     def decorator(cls):
         target_interface = interface or cls
@@ -1256,7 +1256,7 @@ def transient(interface: Type = None):
         return cls
     return decorator
 
-def scoped(interface: Type = None):
+def scoped(interface: type = None):
     """Decorator to register a class as scoped."""
     def decorator(cls):
         target_interface = interface or cls
@@ -1575,7 +1575,7 @@ def demonstrate_all_solutions():
     result2 = calc.multiply(3, 4)
     result3 = calc.sqrt(16)
     
-    print(f"Calculator operations:")
+    print("Calculator operations:")
     print(f"  10 + 5 = {result1}")
     print(f"  3 * 4 = {result2}")
     print(f"  sqrt(16) = {result3}")
@@ -1600,7 +1600,7 @@ def demonstrate_all_solutions():
     }
     
     app_config = AppConfig.for_environment("development")
-    print(f"App config for development:")
+    print("App config for development:")
     print(f"  Debug: {app_config.debug}")
     print(f"  Environment: {app_config.environment}")
     print(f"  Database host: {app_config.database.host}")

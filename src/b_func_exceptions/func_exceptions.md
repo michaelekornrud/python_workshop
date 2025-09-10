@@ -234,7 +234,7 @@ Custom exceptions make error handling more precise and help distinguish between 
 
 Python encourages the EAFP (Easier to Ask for Forgiveness than Permission) approach over LBYL (Look Before You Leap):
 
-### LBYL Approach (Not Recommended)
+### LBYL (Look before you leap) Approach (Not Recommended)
 ```python
 def get_user_age(users, username):
     """Get user age using LBYL approach."""
@@ -245,7 +245,7 @@ def get_user_age(users, username):
     return None
 ```
 
-### EAFP Approach (Recommended)
+### EAFP (Easier to ask for forgiveness than permission) Approach (Recommended)
 ```python
 def get_user_age(users, username):
     """Get user age using EAFP approach."""

@@ -138,14 +138,14 @@ scoop install uv
 1. **`src/a_basics/`** - Python Fundamentals
    - Variables, data types, operators, control flow
    - Essential for developers new to Python syntax
-
-2. **`src/b_pythonic/`** - Pythonic Thinking  
-   - Core Pythonic concepts, collections, comprehensions, unpacking, truthiness
-   - Learn to "think in Python" vs other languages
-
-3. **`src/c_func_exceptions/`** - Functions & Exception Handling
+   
+2. **`src/b_func_exceptions/`** - Functions & Exception Handling
    - Functions, *args/**kwargs, closures, exceptions, context managers
    - Error handling patterns and functional programming concepts
+
+3. **`src/c_pythonic/`** - Pythonic Thinking  
+   - Core Pythonic concepts, collections, comprehensions, unpacking, truthiness
+   - Learn to "think in Python" vs other languages
 
 4. **`src/d_modules_typing_tools/`** - Modules, Typing & Tools
    - Modules/packages, typing, dataclasses, Protocols, development tooling
@@ -159,11 +159,6 @@ scoop install uv
 6. **`src/f_async/`** - Asynchronous Programming
    - async/await, asyncio, concurrent programming
    - Modern Python concurrency patterns
-
-7. **`src/g_advanced/`** - Advanced Topics
-   - Complex project structure patterns
-   - Plugin architectures and advanced design patterns
-   - For experienced developers ready for sophisticated Python patterns
 
 ## Why UV?
 

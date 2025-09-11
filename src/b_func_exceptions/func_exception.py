@@ -191,7 +191,7 @@ def withdraw_money(balance: float, amount: float, daily_limit: float = 10000) ->
     pass
 
 # =============================================================================
-# 💡 EXTENSION TASK 6: JSON File Processing with Error Handling (Post-workshop practice - 12 minutes)
+# EXTENSION TASK 6: JSON File Processing with Error Handling (Post-workshop practice - 12 minutes)
 # =============================================================================
 
 """
